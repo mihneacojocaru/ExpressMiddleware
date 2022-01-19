@@ -1,5 +1,5 @@
 import express from 'express';
-import insertRoutes from './Routes/insertRoutes.js';
+import productRoutes from './Routes/productRoutes.js';
 import cors from 'cors';
 
 const app = express();
@@ -12,7 +12,7 @@ app.use(express.urlencoded({extended:false}));
 app.use(cors());
 
 //routes
-app.use('/api/v1/inserts', insertRoutes)
+app.use('/api/v1/products', productRoutes)
 
 app.use((req,res,next)=>{
 

@@ -1,11 +1,11 @@
 import express from 'express';
-import InsertsRepo from '../Repositories/insertsRepo.js';
+import ProductsRepo from '../Repositories/productsRepo.js';
 
-let insertsRoute = express.Router();
+let productRoutes = express.Router();
 
-let insertsRepo = new InsertsRepo();
+let productsRepo = new ProductsRepo();
 
-insertsRoute.use((req,res,next)=>{
+productRoutes.use((req,res,next)=>{
     console.log("From Middleware 1");
 
     let mihnea={  
@@ -14,9 +14,9 @@ insertsRoute.use((req,res,next)=>{
     next(mihnea);
 })
 
-insertsRoute.get('/', async (req,res) =>{
+productRoutes.get('/', async (req,res) =>{
     try {
-        let items = await insertsRepo.getInserts();
+        let items = await productsRepo.getProducts();
 
         res.status(200).json(items);
 
@@ -26,7 +26,7 @@ insertsRoute.get('/', async (req,res) =>{
     }
 });
 
-insertsRoute.use((req,res,next)=>{
+productRoutes.use((req,res,next)=>{
     console.log("From Middleware 2");
     let mihnea={  
         text:"ceva routes MW2"
@@ -35,30 +35,40 @@ insertsRoute.use((req,res,next)=>{
 });
 
 
-insertsRoute.post('/', async (req,res) => {
+productRoutes.post('/', async (req,res) => {
     try {
         let item = req.body;
-        insertsRepo.newIsertsList(item);
+        productsRepo.newProductsList(item);
         res.status(200).json('Item postet sucessfuly');
     } catch (error) {
         res.status(500).json({message: error.message});
     }
 });
 
-insertsRoute.use((req,res,next)=>{
+productRoutes.use((req,res,next)=>{
     console.log('From Middleware 3');
     next();
 });
 
-insertsRoute.delete('/:id', async (req,res) => {
+productRoutes.delete('/:id', async (req,res) => {
     try {
         let {id} = req.params;
-        insertsRepo.deleteItem(id);
+        productsRepo.deleteItem(id);
         res.status(200).json('Deleted Successfuly!');
     } catch (error) {
         res.status(500).json({message: error.message});
     }
-})
+});
+
+productRoutes.put('/', async (req,res) => {
+    try {
+        let item = req.body;
+        productsRepo.updateProduct(item);
+        res.status(200).json('Product updated sucessfuly!');
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
 
 
-export default insertsRoute;
+export default productRoutes;

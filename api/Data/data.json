@@ -33,5 +33,19 @@
     "price": 500,
     "description": "This is a product description: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, nemo odit! Illo asperiores, delectus accusamus aliquam sed quibusdam aliquid minima?",
     "photo": "https://frankfurt.apollo.olxcdn.com:443/v1/files/r9kif2mmsyg42-RO/image;s=600x600"
+  },
+  {
+    "id": 105,
+    "title": "Samsung S22 Ultra",
+    "price": 500,
+    "description": "This is a product description: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, nemo odit! Illo asperiores, delectus accusamus aliquam sed quibusdam aliquid minima?",
+    "photo": "https://frankfurt.apollo.olxcdn.com:443/v1/files/r9kif2mmsyg42-RO/image;s=600x600"
+  },
+  {
+    "id": 106,
+    "title": "Apple Thing Updated",
+    "price": 456,
+    "description": "This is a product description: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, nemo odit! Illo asperiores, delectus accusamus aliquam sed quibusdam aliquid minima?",
+    "photo": "https://frankfurt.apollo.olxcdn.com:443/v1/files/r9kif2mmsyg42-RO/image;s=600x600"
   }
 ]

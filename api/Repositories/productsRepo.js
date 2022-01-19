@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-export default class InsertsRepo {
-    getInserts = () => {
+export default class ProductsRepo {
+    getProducts = () => {
         return new Promise( (resolve,reject) => {
             fs.readFile("./Data/data.json", "utf-8", (err, data)=> {
                 if(err){
@@ -14,7 +14,7 @@ export default class InsertsRepo {
         })
     }
 
-    saveNewInsert = (data) => {
+    saveNewProducts = (data) => {
         return new Promise((resolve, reject) => {
             fs.writeFile(
                 "./Data/data.json",
@@ -30,15 +30,15 @@ export default class InsertsRepo {
         });
     }
 
-    newIsertsList = async (obj) => {
+    newProductsList = async (obj) => {
         try {
-            let items = await this.getInserts();
+            let items = await this.getProducts();
 
             let newInserts = { id: this.nextId(items), ...obj};
 
             items.push(newInserts);
             
-            await this.saveNewInsert(items);
+            await this.saveNewProducts(items);
         } catch (error) {
             console.warn(error);
         }
@@ -56,11 +56,29 @@ export default class InsertsRepo {
 
     deleteItem = async (id) =>{
         try {
-            let items = await this.getInserts();
+            let items = await this.getProducts();
             items = items.filter( e => e.id != id);
-            await this.saveNewInsert(items);
+            await this.saveNewProducts(items);
         } catch (error) {
             console.warn(error)
+        }
+    }
+
+    updateProduct = async (obj) => {
+        
+        try {
+            let items = await this.getProducts();
+            for(let i=0; i<items.length; i++){
+                if(items[i].id == obj.id){
+                    items[i].title = obj.title;
+                    items[i].price = obj.price;
+                    items[i].description = obj.description;
+                    items[i].photo = obj.photo;
+                }
+            }
+            await this.saveNewProducts(items);
+        } catch (error) {
+            console.warn(error);
         }
     }
 }

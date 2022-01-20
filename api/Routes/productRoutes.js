@@ -5,70 +5,71 @@ let productRoutes = express.Router();
 
 let productsRepo = new ProductsRepo();
 
-productRoutes.use((req,res,next)=>{
-    console.log("From Middleware 1");
 
-    let mihnea={  
-        text:"ceva routes MW1"
+function asyncHandler(cb){
+    return async (req,res,next)=>{
+        try{
+            await cb(req,res,next);
+        }catch(err){
+            next(err);
+        }
     }
-    next(mihnea);
-})
+}
 
-productRoutes.get('/', async (req,res) =>{
-    try {
-        let items = await productsRepo.getProducts();
+// productRoutes.use((req,res,next)=>{
+//     console.log("First Console Print");
+//     req.mihnea="message from MW1";
+//     req.itemNotFound='Item not found';
+//     next();
+// });
 
-        res.status(200).json(items);
+productRoutes.get('/', asyncHandler(async(req,res,next)=>{
+    let items = await productsRepo.getProducts();
+    res.status(200).json(items);
+    
+}));
 
-    } catch (error) {
+// productRoutes.use((req,res,next)=>{
+//     console.log(req.mihnea);
+//     req.bogdan="Something else";
+//     next();
+// });
 
-        res.status(500).json({message: error.message})
-    }
-});
+productRoutes.post('/', asyncHandler(async (req,res,next)=>{
+    let item = req.body;
+    productsRepo.newProductsList(item);
+    res.status(200).json('Item successfuly postet');
+}));
 
-productRoutes.use((req,res,next)=>{
-    console.log("From Middleware 2");
-    let mihnea={  
-        text:"ceva routes MW2"
-    }
-    next(mihnea);
-});
+// productRoutes.use((req,res,next)=>{
+//     console.log(req.mihnea);
+//     console.log(req.bogdan);
+//     next();
+// });
 
-
-productRoutes.post('/', async (req,res) => {
-    try {
-        let item = req.body;
-        productsRepo.newProductsList(item);
-        res.status(200).json('Item postet sucessfuly');
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
-});
-
-productRoutes.use((req,res,next)=>{
-    console.log('From Middleware 3');
-    next();
-});
-
-productRoutes.delete('/:id', async (req,res) => {
-    try {
-        let {id} = req.params;
+productRoutes.delete("/:id",asyncHandler(async (req,res,next)=>{
+    let {id} = req.params;
+    let x = await productsRepo.verifyItem(id);
+    if(x == true){
         productsRepo.deleteItem(id);
-        res.status(200).json('Deleted Successfuly!');
-    } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(200).json('Delete Successful');
+    }else{
+        req.id = id;
+        next();
     }
+}));
+
+productRoutes.use((req,res,next)=>{
+    const x = `Item #${req.id} was not found.`;
+    next(x);
 });
 
-productRoutes.put('/', async (req,res) => {
-    try {
-        let item = req.body;
-        productsRepo.updateProduct(item);
-        res.status(200).json('Product updated sucessfuly!');
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
-});
+
+productRoutes.put('/', asyncHandler(async (req,res,next)=>{
+   let item = req.body;
+   productsRepo.updateProduct(item);
+   res.status(200).json('Product updated sucessfuly!'); 
+}));
 
 
 export default productRoutes;

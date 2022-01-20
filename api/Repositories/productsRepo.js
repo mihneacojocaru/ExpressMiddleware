@@ -81,4 +81,15 @@ export default class ProductsRepo {
             console.warn(error);
         }
     }
+
+    verifyItem = async (id) => {
+        let items = await this.getProducts();
+        let boolean = false;
+        items.forEach( e => {
+            if(e.id == id){
+                boolean = true;
+            }    
+        });
+        return boolean;
+    }
 }

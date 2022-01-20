@@ -14,14 +14,18 @@ app.use(cors());
 //routes
 app.use('/api/v1/products', productRoutes)
 
-app.use((req,res,next)=>{
 
-     const err= new Error("not ceva");
+app.use((errMsg,req,res,next)=>{
+
+     const err = new Error(errMsg);
+
      err.status=404;
 
      next(err);
 
 });
+
+
 
 app.use((err,req,res,next)=>{
 
